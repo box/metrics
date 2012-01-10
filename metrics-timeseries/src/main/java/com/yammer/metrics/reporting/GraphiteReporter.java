@@ -15,7 +15,6 @@ import java.util.concurrent.TimeUnit;
  */
 public class GraphiteReporter extends AbstractTimeSeriesReporter {
     private static final Logger LOG = LoggerFactory.getLogger(GraphiteReporter.class);
-    protected final String prefix;
 
     /**
      * Enables the graphite reporter to send data for the default metrics registry
@@ -133,14 +132,7 @@ public class GraphiteReporter extends AbstractTimeSeriesReporter {
      * @throws IOException if there is an error connecting to the Graphite server
      */
     public GraphiteReporter(MetricsRegistry metricsRegistry, String host, int port, String prefix, MetricPredicate predicate) throws IOException {
-        super(metricsRegistry, "graphite-reporter", host, port, predicate);
-
-        if (prefix != null) {
-            // Pre-append the "." so that we don't need to make anything conditional later.
-            this.prefix = prefix + ".";
-        } else {
-            this.prefix = "";
-        }
+        super(metricsRegistry, "graphite-reporter", host, port, prefix, predicate);
     }
 
     @Override

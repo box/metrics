@@ -23,16 +23,24 @@ import static com.yammer.metrics.core.VirtualMachineMetrics.*;
 abstract public class AbstractTimeSeriesReporter extends AbstractReporter {
     private static final Logger LOG = LoggerFactory.getLogger(AbstractTimeSeriesReporter.class);
     protected final Locale locale = Locale.US;
+    protected final String prefix;
     private final String host;
     private final int port;
     private final MetricPredicate predicate;
     private Writer writer;
 
-    protected AbstractTimeSeriesReporter(MetricsRegistry metricsRegistry, String name, String host, int port, MetricPredicate predicate) {
+    protected AbstractTimeSeriesReporter(MetricsRegistry metricsRegistry, String name, String host, int port, String prefix, MetricPredicate predicate) {
         super(metricsRegistry, name);
         this.host = host;
         this.port = port;
         this.predicate = predicate;
+
+        if (!prefix.isEmpty()) {
+            // Pre-append the "." so that we don't need to make anything conditional later.
+            this.prefix = prefix + ".";
+        } else {
+            this.prefix = prefix;
+        }
     }
 
     /**
